@@ -70,6 +70,9 @@ class HapticApp:
         connect_inputs = inputs.contextualize(c.CONNECT_TAB_RECT.topleft)
         self.connect_tab.update(connect_inputs)
 
+        wd_inputs = inputs.contextualize(c.WORD_DEF_TAB_RECT.topleft)
+        self.word_def_tab.update(wd_inputs)
+
 
 if __name__ == "__main__":
     HapticApp().mainloop()

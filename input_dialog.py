@@ -39,8 +39,8 @@ class InputDialog:
             pg.Rect(
                 c.INPUT_DIALOG_TITLEBAR_RECT.left,
                 c.INPUT_DIALOG_TITLEBAR_RECT.top,
-                c.INPUT_DIALOG_TITLEBAR_HEIGHT + 30,
-                c.INPUT_DIALOG_TITLEBAR_HEIGHT
+                c.INPUT_DIALOG_TITLEBAR_HEIGHT + 30 - 1,
+                c.INPUT_DIALOG_TITLEBAR_HEIGHT - 1
             ),
             "取消",
             c.CLOSE_BUTTON_STYLE
@@ -53,7 +53,7 @@ class InputDialog:
 
     def evaluate(self) -> str | None:
         self.screen.fill(
-            (0x50, 0x50, 0x50, 0xFF),
+            (0x30, 0x30, 0x30),
             special_flags=pg.BLEND_SUB
         )
 
@@ -71,8 +71,12 @@ class InputDialog:
         return self.result_str
 
     def render(self):
-        self.screen.fill(c.WHITE, rect=c.INPUT_DIALOG_RECT)
+        self.screen.fill(
+            c.BLACK, rect=c.INPUT_DIALOG_TITLEBAR_RECT.inflate(2, 2)
+        )
         self.screen.fill(c.GRAY, rect=c.INPUT_DIALOG_TITLEBAR_RECT)
+        self.screen.fill(c.BLACK, rect=c.INPUT_DIALOG_RECT.inflate(2, 2))
+        self.screen.fill(c.WHITE, rect=c.INPUT_DIALOG_RECT)
 
         text_pos = c.INPUT_DIALOG_RECT.topleft
         text_pos = (text_pos[0] + 12, text_pos[1] + 6)
@@ -83,7 +87,7 @@ class InputDialog:
         pg.draw.rect(
             self.screen, c.BLACK,
             c.INPUT_DIALOG_TEXT_INPUT_RECT,
-            width=2
+            width=1
         )
 
         if self.text_updated:

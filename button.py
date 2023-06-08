@@ -28,17 +28,21 @@ class Button:
     ):
         self.cb = cb
         self.rect = rect
-        self.text = text
         self.style = style
+        self.text = text
 
         self.state = "NORMAL"
 
         self.update_style(self.style)
-        self.update_text(self.text)
+        self.update_text(self.text, force=True)
 
         self.disabled = False
 
-    def update_text(self, text: str):
+    def update_text(self, text: str, force=False):
+        if self.text == text:
+            if not force:
+                return
+
         self.text = text
         self.text_surf = c.FONTS.mid.render(text, True, self.style.fg)
 
@@ -54,6 +58,15 @@ class Button:
             bg = self.style.click
         elif self.state == "NORMAL":
             bg = self.style.normal
+
+        if self.style.outline_width != 0:
+            pg.draw.rect(
+                target, self.style.outline,
+                self.rect.inflate(
+                    self.style.outline_width * 2,
+                    self.style.outline_width * 2
+                ),
+            )
 
         pg.draw.rect(target, bg, self.rect)
 

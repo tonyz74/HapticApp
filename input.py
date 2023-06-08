@@ -1,5 +1,6 @@
 import pygame as pg
 from dataclasses import dataclass
+from copy import deepcopy
 
 
 MB_LEFT = 1
@@ -21,7 +22,7 @@ class Inputs:
     text_input: str
 
     def contextualize(self, topleft: (int, int)):
-        dup = self
+        dup = deepcopy(self)
         dup.mouse_pos = (
             self.mouse_pos[0] - topleft[0],
             self.mouse_pos[1] - topleft[1]

@@ -19,12 +19,34 @@ class FontMap:
 
 FONTS = FontMap()
 
+# Logical Constants
+
+N_WORDS = 4
+N_SLOTS_PER_WORD = 10
+
+# Sizes
+
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 720
 
 WORD_DEF_TAB_WIDTH = WINDOW_WIDTH
 WORD_DEF_TAB_HEIGHT = (WINDOW_HEIGHT / 4)
 WORD_DEF_TAB_RECT = pg.Rect(0, 0, WORD_DEF_TAB_WIDTH, WORD_DEF_TAB_HEIGHT)
+
+WORD_DEF_TAB_WORDLIST_RECT = pg.Rect(
+    WORD_DEF_TAB_WIDTH - 200, 0,
+    WORD_DEF_TAB_WIDTH, WORD_DEF_TAB_HEIGHT
+)
+
+WORDLIST_WORD_BUTTON_SIZE = (85, 40)
+
+NAME_LABEL_RECT = pg.Rect(20, 20, 120, 40)
+
+NAME_CHANGE_BUTTON_RECT = pg.Rect(20 + 120 + 20, 20, 260, 40)
+
+SLOT_STARTING_POS = (20, 80)
+SLOT_SIZE = (40, 80)
+
 
 CONNECT_TAB_WIDTH = WINDOW_WIDTH
 CONNECT_TAB_HEIGHT = (WINDOW_HEIGHT / 8)
@@ -89,5 +111,45 @@ CLOSE_BUTTON_STYLE = Style(
 
     fg=BLACK,
     outline=BLACK,
+    outline_width=1
+)
+
+WORDLIST_BUTTON_STYLE = Style(
+    hover=WHITE,
+    click=WHITE,
+    normal=LIGHTER_RED,
+
+    fg=BLACK,
+    outline=BLACK,
+    outline_width=1
+)
+
+TEXT_INPUT_STYLE = Style(
+    hover=WHITE,
+    click=WHITE,
+    normal=WHITE,
+
+    fg=BLACK,
+    outline=BLACK,
+    outline_width=1
+)
+
+SLOT_NONE_STYLE = Style(
+    hover=LIGHT_GRAY,
+    click=LIGHT_GRAY,
+    normal=GRAY,
+
+    fg=BLACK,
+    outline=WHITE,
+    outline_width=1
+)
+
+SLOT_VIB_STYLE = Style(
+    hover=BLUE,
+    click=RED,
+    normal=LIGHT_RED,
+
+    fg=BLACK,
+    outline=WHITE,
     outline_width=1
 )
