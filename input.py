@@ -17,6 +17,7 @@ class Inputs:
     modifiers: int
 
     text_editing: str
+    text_editing_start: int
     text_input: str
 
     def contextualize(self, topleft: (int, int)):
@@ -38,6 +39,7 @@ class EventLoop:
 
         text_input = ""
         text_editing = ""
+        text_editing_start = -1
 
         for ev in pg.event.get():
             if ev.type == pg.QUIT:
@@ -63,6 +65,7 @@ class EventLoop:
                 text_input = ev.text
             if ev.type == pg.TEXTEDITING:
                 text_editing = ev.text
+                text_editing_start = ev.start
 
         clicked_btns = pg.mouse.get_pressed()
 
@@ -76,5 +79,6 @@ class EventLoop:
             pg.key.get_mods(),
 
             text_editing,
+            text_editing_start,
             text_input,
         )

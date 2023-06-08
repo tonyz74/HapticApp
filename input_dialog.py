@@ -12,8 +12,10 @@ class InputDialog:
     edit_buffer: str
     text_updated: bool
 
-    text_surf: pg.Surface
+    cursor_index: int
+    cursor_int: int
 
+    text_surf: pg.Surface
     prompt_surf: pg.Surface
 
     def get_text_preview(self) -> str:
@@ -29,6 +31,8 @@ class InputDialog:
         self.edit_buffer = ""
 
         self.text_updated = True
+        self.cursor_index = 0
+        self.cursor_pos = 0
 
         self.close_button = Button(
             lambda b: self.close_pressed(b),
@@ -83,18 +87,29 @@ class InputDialog:
         )
 
         if self.text_updated:
+            preview = self.get_text_preview()
             self.text_surf = c.FONTS.mid.render(
-                self.get_text_preview(),
-                True, c.BLACK
+                preview, True, c.BLACK
             )
+            self.cursor_pos = c.FONTS.mid.size(
+                preview[:self.cursor_index]
+            )[0]
 
-        self.screen.blit(
-            self.text_surf,
-            c.INPUT_DIALOG_TEXT_INPUT_RECT
-                .move(0, c.INPUT_DIALOG_TEXT_INPUT_RECT.height / 2)
-                .move(10, -self.text_surf.get_size()[1] / 2)
+        text_blit_pos = (c.INPUT_DIALOG_TEXT_INPUT_RECT
+                         .move(0, c.INPUT_DIALOG_TEXT_INPUT_RECT.height / 2)
+                         .move(10, -self.text_surf.get_size()[1] / 2))
+
+        self.screen.blit(self.text_surf, text_blit_pos)
+
+        start_point = (
+            text_blit_pos.x + self.cursor_pos + 1,
+            text_blit_pos.y + self.text_surf.get_size()[1] / 2
         )
-
+        pg.draw.line(
+            self.screen, c.BLACK,
+            (start_point[0], start_point[1] - 12),
+            (start_point[0], start_point[1] + 12),
+        )
         pass
 
     def update(self, i: Inputs):
@@ -105,10 +120,13 @@ class InputDialog:
             return
 
         if i.text_editing != "":
+            diff = len(i.text_editing) - len(self.edit_buffer)
+            self.cursor_index += diff
             self.edit_buffer = i.text_editing
             self.text_updated = True
         else:
             if pg.K_BACKSPACE in i.keys_just_pressed:
+                self.cursor_index -= 1
                 if len(self.edit_buffer) == 1:
                     self.edit_buffer = ""
                 else:
@@ -119,3 +137,4 @@ class InputDialog:
             self.result_str += i.text_input
             self.edit_buffer = ""
             self.text_updated = True
+            self.cursor_index += len(i.text_input)
