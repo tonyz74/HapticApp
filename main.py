@@ -5,6 +5,8 @@ from connect_tab import ConnectTab
 from command_tab import CommandTab
 from word_def_tab import WordDefinitionTab
 
+from input import EventLoop, Inputs
+
 
 class HapticApp:
     screen: pg.Surface
@@ -13,6 +15,8 @@ class HapticApp:
     word_def_tab: WordDefinitionTab
     connect_tab: ConnectTab
     command_tab: CommandTab
+
+    event_loop: EventLoop
 
     running: bool
 
@@ -32,18 +36,21 @@ class HapticApp:
         self.connect_tab = ConnectTab()
         self.command_tab = CommandTab()
 
+        self.event_loop = EventLoop()
+
     def mainloop(self):
         self.running = True
 
         while self.running:
-            for ev in pg.event.get():
-                if ev.type == pg.QUIT:
-                    self.running = False
+            inputs = self.event_loop.execute()
+            if inputs is None:
+                self.running = False
+                break
 
             self.screen.fill(c.WHITE)
 
-            # Render
             self.render()
+            self.update(inputs)
 
             pg.display.flip()
             self.clock.tick(30)
@@ -56,6 +63,11 @@ class HapticApp:
         self.screen.blit(word_def, c.WORD_DEF_TAB_RECT)
         self.screen.blit(connect, c.CONNECT_TAB_RECT)
         self.screen.blit(command, c.COMMAND_TAB_RECT)
+
+    def update(self, inputs):
+
+        connect_inputs = inputs.contextualize(c.CONNECT_TAB_RECT.topleft)
+        self.connect_tab.update(connect_inputs)
 
 
 if __name__ == "__main__":

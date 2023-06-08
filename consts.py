@@ -1,4 +1,5 @@
 import pygame as pg
+from style import Style
 
 
 class FontMap:
@@ -44,3 +45,17 @@ WHITE = pg.Color(0xFF, 0xFF, 0xFF)
 RED = pg.Color(0xFF, 0x00, 0x00)
 GREEN = pg.Color(0x00, 0xFF, 0x00)
 BLUE = pg.Color(0x00, 0x00, 0xFF)
+BLACK = pg.Color(0x00, 0x00, 0x00)
+LIGHT_GRAY = pg.Color(0xF0, 0xF0, 0xF0)
+GRAY = pg.Color(0xE0, 0xE0, 0xE0)
+
+# Styles
+BUTTON_STYLE = Style(
+    hover=LIGHT_GRAY,
+    click=WHITE,
+    normal=GRAY,
+
+    fg=BLACK,
+    outline=BLACK,
+    outline_width=1
+)
