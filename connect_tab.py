@@ -17,9 +17,8 @@ class ConnectTab:
             120, 60
         )
         self.connect_button = Button(
-            lambda btn: print(btn),
-            connect_rect,
-            "Click Me!", c.BUTTON_STYLE
+            lambda btn: self.on_connect_clicked(btn),
+            connect_rect, "Click Me!", c.BUTTON_STYLE
         )
 
     def render(self) -> pg.Surface:
@@ -29,3 +28,6 @@ class ConnectTab:
 
     def update(self, i: Inputs):
         self.connect_button.update(i)
+
+    def on_connect_clicked(self, btn):
+        print("got clicked with btn", btn)

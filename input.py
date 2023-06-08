@@ -43,6 +43,10 @@ class EventLoop:
                 if ev.button == 2:
                     mouse_just_released[1] = True
 
+            if ev.type == pg.TEXTINPUT or ev.type == pg.TEXTEDITING:
+                print(ev)
+
+
         pressed_btns = pg.mouse.get_pressed()
 
         return Inputs(

@@ -44,7 +44,6 @@ class Button:
 
     def update_style(self, style: Style):
         self.style = style
-        # Todo lmao
 
     def render(self, target: pg.Surface):
         # Judge color based on state
