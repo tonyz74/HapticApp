@@ -5,6 +5,7 @@ from dataclasses import dataclass
 MB_LEFT = 1
 MB_RIGHT = 2
 
+
 @dataclass
 class Inputs:
     mouse_pos: (int, int)

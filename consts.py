@@ -40,20 +40,52 @@ COMMAND_TAB_RECT = pg.Rect(
     COMMAND_TAB_WIDTH, COMMAND_TAB_HEIGHT
 )
 
+INPUT_DIALOG_WIDTH = WINDOW_WIDTH - 120
+INPUT_DIALOG_HEIGHT = WINDOW_HEIGHT - 600
+INPUT_DIALOG_RECT = pg.Rect(
+    60, 300, INPUT_DIALOG_WIDTH, INPUT_DIALOG_HEIGHT
+)
+
+INPUT_DIALOG_TITLEBAR_WIDTH = INPUT_DIALOG_WIDTH
+INPUT_DIALOG_TITLEBAR_HEIGHT = 35
+INPUT_DIALOG_TITLEBAR_RECT = pg.Rect(
+    INPUT_DIALOG_RECT.left,
+    INPUT_DIALOG_RECT.top - INPUT_DIALOG_TITLEBAR_HEIGHT,
+    INPUT_DIALOG_TITLEBAR_WIDTH,
+    INPUT_DIALOG_TITLEBAR_HEIGHT
+)
+
+INPUT_DIALOG_TEXT_INPUT_RECT = (INPUT_DIALOG_RECT
+                                .inflate(-60, 0)
+                                .move(0, 10)
+                                .scale_by(1.0, 0.4))
+
 # Color definitions
 WHITE = pg.Color(0xFF, 0xFF, 0xFF)
-RED = pg.Color(0xFF, 0x00, 0x00)
 GREEN = pg.Color(0x00, 0xFF, 0x00)
 BLUE = pg.Color(0x00, 0x00, 0xFF)
 BLACK = pg.Color(0x00, 0x00, 0x00)
 LIGHT_GRAY = pg.Color(0xF0, 0xF0, 0xF0)
 GRAY = pg.Color(0xE0, 0xE0, 0xE0)
+RED = pg.Color(0xFF, 0x40, 0x40)
+LIGHT_RED = pg.Color(0xFF, 0x60, 0x60)
+LIGHTER_RED = pg.Color(0xFF, 0x70, 0x70)
 
 # Styles
 BUTTON_STYLE = Style(
     hover=LIGHT_GRAY,
     click=WHITE,
     normal=GRAY,
+
+    fg=BLACK,
+    outline=BLACK,
+    outline_width=1
+)
+
+CLOSE_BUTTON_STYLE = Style(
+    hover=LIGHTER_RED,
+    click=LIGHTER_RED,
+    normal=LIGHT_RED,
 
     fg=BLACK,
     outline=BLACK,

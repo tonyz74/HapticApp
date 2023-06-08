@@ -2,6 +2,7 @@ import consts as c
 import pygame as pg
 from button import Button
 from input import Inputs
+from input_dialog import InputDialog
 
 
 class ConnectTab:
@@ -30,4 +31,5 @@ class ConnectTab:
         self.connect_button.update(i)
 
     def on_connect_clicked(self, btn):
-        print("got clicked with btn", btn)
+        res = InputDialog("Please enter a value").evaluate()
+        print(res)

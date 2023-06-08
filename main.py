@@ -23,6 +23,7 @@ class HapticApp:
     def __init__(self):
         pg.init()
         pg.font.init()
+        pg.key.set_repeat(500, 50)
 
         win_size = (c.WINDOW_WIDTH, c.WINDOW_HEIGHT)
         self.screen = pg.display.set_mode(win_size)
