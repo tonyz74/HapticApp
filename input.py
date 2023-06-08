@@ -2,14 +2,21 @@ import pygame as pg
 from dataclasses import dataclass
 
 
+MB_LEFT = 1
+MB_RIGHT = 2
+
 @dataclass
 class Inputs:
     mouse_pos: (int, int)
     mouse_just_pressed: (bool, bool)
     mouse_just_released: (bool, bool)
     mouse_state: (bool, bool)
-    pressed_keys: set[int]
+
+    keys_just_pressed: set[int]
     modifiers: int
+
+    text_editing: str
+    text_input: str
 
     def contextualize(self, topleft: (int, int)):
         dup = self
@@ -23,38 +30,50 @@ class Inputs:
 
 class EventLoop:
     def execute(self) -> Inputs | None:
-        pressed_keys = {}
+        keys_just_pressed: set[int] = set()
+        keys_just_released: set[int] = set()
         mouse_just_pressed = [False, False]
         mouse_just_released = [False, False]
+
+        text_input = ""
+        text_editing = ""
 
         for ev in pg.event.get():
             if ev.type == pg.QUIT:
                 return None
 
             if ev.type == pg.MOUSEBUTTONDOWN:
-                if ev.button == 1:
+                if ev.button == MB_LEFT:
                     mouse_just_pressed[0] = True
-                if ev.button == 2:
+                if ev.button == MB_RIGHT:
                     mouse_just_pressed[1] = True
-
-            if ev.type == pg.MOUSEBUTTONUP:
-                if ev.button == 1:
+            elif ev.type == pg.MOUSEBUTTONUP:
+                if ev.button == MB_LEFT:
                     mouse_just_released[0] = True
-                if ev.button == 2:
+                if ev.button == MB_RIGHT:
                     mouse_just_released[1] = True
 
-            if ev.type == pg.TEXTINPUT or ev.type == pg.TEXTEDITING:
-                print(ev)
+            if ev.type == pg.KEYDOWN:
+                keys_just_pressed.add(ev.key)
+            elif ev.type == pg.KEYUP:
+                keys_just_released.add(ev.key)
 
+            if ev.type == pg.TEXTINPUT:
+                text_input = ev.text
+            if ev.type == pg.TEXTEDITING:
+                text_editing = ev.text
 
-        pressed_btns = pg.mouse.get_pressed()
+        clicked_btns = pg.mouse.get_pressed()
 
         return Inputs(
             pg.mouse.get_pos(),
             tuple(mouse_just_pressed),
             tuple(mouse_just_released),
-            # 0 is left, 2 is right
-            (pressed_btns[0], pressed_btns[2]),
-            pressed_keys,
-            0
+            (clicked_btns[MB_LEFT - 1], clicked_btns[MB_RIGHT - 1]),
+
+            keys_just_pressed,
+            pg.key.get_mods(),
+
+            text_editing,
+            text_input,
         )
