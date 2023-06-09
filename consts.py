@@ -126,6 +126,11 @@ RED = pg.Color(0xFF, 0x40, 0x40)
 LIGHT_RED = pg.Color(0xFF, 0x60, 0x60)
 LIGHTER_RED = pg.Color(0xFF, 0x70, 0x70)
 
+SLIGHTLY_DARK_GRAY = pg.Color(0x70, 0x70, 0x70)
+SLIGHTLY_DARKER_GRAY = pg.Color(0x50, 0x50, 0x50)
+DARK_GRAY = pg.Color(0x20, 0x20, 0x20)
+DARKER_GRAY = pg.Color(0x10, 0x10, 0x10)
+
 # Styles
 
 COMMAND_AUTO_BACKGROUND = WHITE
@@ -134,7 +139,7 @@ COMMAND_AUTO_FOREGROUND = BLACK
 COMMAND_MANUAL_BACKGROUND = WHITE
 COMMAND_MANUAL_FOREGROUND = BLACK
 
-CONNECT_BACKGROUND = WHITE
+CONNECT_BACKGROUND = LIGHT_GRAY
 CONNECT_FOREGROUND = BLACK
 
 INPUT_DIALOG_BACKGROUND = WHITE
@@ -147,7 +152,7 @@ WORD_DEF_BACKGROUND = GRAY
 WORD_DEF_FOREGROUND = BLACK
 WORDLIST_BACKGROUND = LIGHT_GRAY
 
-PREVIEW_GRID_OUTLINE_COLOR = BLACK
+PREVIEW_GRID_OUTLINE_COLOR = SLIGHTLY_DARKER_GRAY
 
 BUTTON_STYLE = Style(
     hover=LIGHT_GRAY,
@@ -230,5 +235,61 @@ SLOT_VIB_STYLE = Style(
 
     fg=BLACK,
     outline=WHITE,
+    outline_width=1
+)
+
+TIMELINE_EMPTY_STYLE = Style(
+    hover=BLUE,
+    click=RED,
+    normal=LIGHT_RED,
+
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+    disabled_normal=BLACK,
+
+    fg=BLACK,
+    outline=WHITE,
+    outline_width=1
+)
+
+TIMELINE_WORD_STYLE = Style(
+    hover=BLUE,
+    click=RED,
+    normal=LIGHT_RED,
+
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+    disabled_normal=BLACK,
+
+    fg=BLACK,
+    outline=WHITE,
+    outline_width=1
+)
+
+TIMELINE_TIME_SLOT_STYLE = Style(
+    hover=SLIGHTLY_DARK_GRAY,
+    click=SLIGHTLY_DARK_GRAY,
+    normal=SLIGHTLY_DARKER_GRAY,
+
+    disabled_click=DARK_GRAY,
+    disabled_hover=DARK_GRAY,
+    disabled_normal=DARKER_GRAY,
+
+    fg=WHITE,
+    outline=WHITE,
+    outline_width=1
+)
+
+COMMAND_SWITCH_MODE_BUTTON_STYLE = Style(
+    hover=SLIGHTLY_DARK_GRAY,
+    click=SLIGHTLY_DARK_GRAY,
+    normal=SLIGHTLY_DARKER_GRAY,
+
+    disabled_click=DARK_GRAY,
+    disabled_hover=DARK_GRAY,
+    disabled_normal=DARKER_GRAY,
+
+    fg=WHITE,
+    outline=BLACK,
     outline_width=1
 )

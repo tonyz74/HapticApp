@@ -21,7 +21,7 @@ class CommandTabCommon:
         self.switch_button = Button(
             lambda b: self.on_switch_button_pressed(b),
             c.MODE_SWITCH_BUTTON_RECT,
-            btn_text, c.WORDLIST_BUTTON_STYLE
+            btn_text, c.COMMAND_SWITCH_MODE_BUTTON_STYLE
         )
 
         src_start = (20, 20)

@@ -53,6 +53,7 @@ class Button:
 
     def update_style(self, style: Style):
         self.style = style
+        self.update_text(self.text, force=True)
 
     def render(self, target: pg.Surface):
         if not self.active:

@@ -41,10 +41,16 @@ class CommandTabAutomatic(CommandTabCommon):
             x = c.TIMELINE_START_POS[0]
 
             for _ in range(c.TIMELINE_ROW_N_SLOTS):
+                style = None
+                if button_n % 2 == 1:
+                    style = c.TIMELINE_TIME_SLOT_STYLE
+                else:
+                    style = c.TIMELINE_EMPTY_STYLE
+
                 self.timeline_buttons.append(Button(
                     self.timeline_button_callback(button_n),
                     pg.Rect((x, y), c.TIMELINE_SLOT_SIZE),
-                    "", c.SLOT_NONE_STYLE
+                    "", style
                 ))
 
                 x += c.TIMELINE_SLOT_SIZE[0]
@@ -116,7 +122,7 @@ class CommandTabAutomatic(CommandTabCommon):
         return surf
 
     def draw_preview(self):
-        pg.draw.rect(self.screen, c.WHITE, pg.Rect(
+        pg.draw.rect(self.screen, c.COMMAND_AUTO_FOREGROUND, pg.Rect(
             (c.PREVIEW_GRID_START_POS[0] - c.PREVIEW_GRID_BORDER_WIDTH,
              c.PREVIEW_GRID_START_POS[1] - c.PREVIEW_GRID_BORDER_WIDTH),
 
@@ -137,7 +143,7 @@ class CommandTabAutomatic(CommandTabCommon):
             for col in range(preview_slots):
                 n = row * c.TIMELINE_ROW_N_SLOTS + col * 2
 
-                pg.draw.rect(self.screen, c.LIGHT_GRAY, pg.Rect(
+                pg.draw.rect(self.screen, c.SLOT_NONE_STYLE.normal, pg.Rect(
                     (preview_pos[0], preview_pos[1]),
                     (c.PREVIEW_GRID_SLOT_WIDTH, c.PREVIEW_GRID_SLOT_HEIGHT)
                 ))
@@ -149,10 +155,14 @@ class CommandTabAutomatic(CommandTabCommon):
                     for (off, enabled) in enumerate(w.vibs):
                         if enabled:
                             shift = subslot_width * off
-                            pg.draw.rect(self.screen, c.RED, pg.Rect(
-                                (preview_pos[0] + shift, preview_pos[1]),
-                                (subslot_width, c.PREVIEW_GRID_SLOT_HEIGHT)
-                            ))
+                            pg.draw.rect(
+                                self.screen,
+                                c.SLOT_VIB_STYLE.normal,
+                                pg.Rect(
+                                    (preview_pos[0] + shift, preview_pos[1]),
+                                    (subslot_width, c.PREVIEW_GRID_SLOT_HEIGHT)
+                                )
+                            )
 
                 line_color = c.PREVIEW_GRID_OUTLINE_COLOR
                 slot_width = c.PREVIEW_GRID_SLOT_WIDTH
@@ -178,7 +188,7 @@ class CommandTabAutomatic(CommandTabCommon):
                 x += c.PREVIEW_GRID_SLOT_WIDTH / c.N_SLOTS_PER_WORD
                 pg.draw.line(
                     self.screen,
-                    c.WHITE,
+                    c.COMMAND_AUTO_FOREGROUND,
                     (x, ln_start[1]),
                     (x, ln_start[1] + 2 * c.PREVIEW_GRID_SLOT_HEIGHT
                                     + c.PREVIEW_GRID_BORDER_WIDTH)

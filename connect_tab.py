@@ -20,7 +20,7 @@ class ConnectTab:
         )
 
     def render(self) -> pg.Surface:
-        self.screen.fill(c.GREEN)
+        self.screen.fill(c.CONNECT_BACKGROUND)
         self.connect_button.render(self.screen)
         return self.screen
 
