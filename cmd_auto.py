@@ -8,6 +8,7 @@ import word
 import events as ev
 import vib_queue
 
+
 class CommandTabAutomatic(CommandTabCommon):
     timeline_buttons: list[Button]
     currently_selected: str | None
@@ -97,7 +98,11 @@ class CommandTabAutomatic(CommandTabCommon):
             self.play_button.update_text("取消")
 
     def render(self) -> pg.Surface:
-        self.screen.fill(c.RED)
+        self.screen.fill(c.COMMAND_AUTO_FOREGROUND)
+        self.screen.fill(
+            c.COMMAND_AUTO_BACKGROUND,
+            rect=pg.Rect((0, 0), c.COMMAND_TAB_RECT.size).inflate(0, -2)
+        )
         surf = super().render()
 
         for b in self.timeline_buttons:
@@ -149,8 +154,10 @@ class CommandTabAutomatic(CommandTabCommon):
                                 (subslot_width, c.PREVIEW_GRID_SLOT_HEIGHT)
                             ))
 
-                pg.draw.rect(self.screen, c.BLACK, pg.Rect(
-                    (preview_pos[0]+c.PREVIEW_GRID_SLOT_WIDTH, preview_pos[1]),
+                line_color = c.PREVIEW_GRID_OUTLINE_COLOR
+                slot_width = c.PREVIEW_GRID_SLOT_WIDTH
+                pg.draw.rect(self.screen, line_color, pg.Rect(
+                    (preview_pos[0] + slot_width, preview_pos[1]),
                     (c.PREVIEW_GRID_TIME_SEP_WIDTH, c.PREVIEW_GRID_SLOT_HEIGHT)
                 ))
 

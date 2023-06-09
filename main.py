@@ -46,7 +46,7 @@ class HapticApp:
                 self.running = False
                 break
 
-            self.screen.fill(c.WHITE)
+            self.screen.fill((0xFF, 0x00, 0xFF))
 
             self.render()
             self.update(inputs)

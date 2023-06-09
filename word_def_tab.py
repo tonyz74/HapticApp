@@ -91,8 +91,14 @@ class WordDefinitionTab:
         print("Current:", self.current_word)
 
     def render(self) -> pg.Surface:
-        self.screen.fill(c.GRAY)
-        self.screen.fill(c.LIGHT_GRAY, c.WORD_DEF_TAB_WORDLIST_RECT)
+        self.screen.fill(c.WORD_DEF_BACKGROUND)
+        self.screen.fill(c.WORDLIST_BACKGROUND, c.WORD_DEF_TAB_WORDLIST_RECT)
+
+        pg.draw.line(
+            self.screen, c.WORD_DEF_FOREGROUND,
+            c.WORD_DEF_TAB_WORDLIST_RECT.topleft,
+            c.WORD_DEF_TAB_WORDLIST_RECT.bottomleft,
+        )
 
         for i in self.word_buttons:
             i.render(self.screen)

@@ -28,7 +28,11 @@ class CommandTabManual(CommandTabCommon):
             self.switch_button.enabled = True
 
     def render(self) -> pg.Surface:
-        self.screen.fill(c.BLUE)
+        self.screen.fill(c.COMMAND_MANUAL_FOREGROUND)
+        self.screen.fill(
+            c.COMMAND_MANUAL_BACKGROUND,
+            rect=pg.Rect((0, 0), c.COMMAND_TAB_RECT.size).inflate(0, -2)
+        )
         surf = super().render()
 
         return surf

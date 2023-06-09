@@ -46,7 +46,8 @@ class InputDialog:
             c.CLOSE_BUTTON_STYLE
         )
 
-        self.prompt_surf = c.FONTS.mid.render(prompt, True, c.BLACK)
+        self.prompt_surf = c.FONTS.mid.render(
+            prompt, True, c.INPUT_DIALOG_FOREGROUND)
 
     def close_pressed(self, btn: Button):
         self.running = False
@@ -75,11 +76,22 @@ class InputDialog:
 
     def render(self):
         self.screen.fill(
-            c.BLACK, rect=c.INPUT_DIALOG_TITLEBAR_RECT.inflate(2, 2)
+            c.INPUT_DIALOG_FOREGROUND,
+            rect=c.INPUT_DIALOG_TITLEBAR_RECT.inflate(2, 2)
         )
-        self.screen.fill(c.GRAY, rect=c.INPUT_DIALOG_TITLEBAR_RECT)
-        self.screen.fill(c.BLACK, rect=c.INPUT_DIALOG_RECT.inflate(2, 2))
-        self.screen.fill(c.WHITE, rect=c.INPUT_DIALOG_RECT)
+        self.screen.fill(
+            c.INPUT_DIALOG_TITLEBAR_BACKGROUND,
+            rect=c.INPUT_DIALOG_TITLEBAR_RECT
+        )
+
+        self.screen.fill(
+            c.INPUT_DIALOG_FOREGROUND,
+            rect=c.INPUT_DIALOG_RECT.inflate(2, 2)
+        )
+        self.screen.fill(
+            c.INPUT_DIALOG_BACKGROUND,
+            rect=c.INPUT_DIALOG_RECT
+        )
 
         text_pos = c.INPUT_DIALOG_RECT.topleft
         text_pos = (text_pos[0] + 12, text_pos[1] + 6)
@@ -88,7 +100,7 @@ class InputDialog:
         self.close_button.render(self.screen)
 
         pg.draw.rect(
-            self.screen, c.BLACK,
+            self.screen, c.INPUT_DIALOG_FOREGROUND,
             c.INPUT_DIALOG_TEXT_INPUT_RECT,
             width=1
         )
@@ -96,7 +108,7 @@ class InputDialog:
         if self.text_updated:
             preview = self.get_text_preview()
             self.text_surf = c.FONTS.mid.render(
-                preview, True, c.BLACK
+                preview, True, c.INPUT_DIALOG_FOREGROUND
             )
             self.cursor_pos = c.FONTS.mid.size(
                 preview[:self.cursor_index]
@@ -113,7 +125,7 @@ class InputDialog:
             text_blit_pos.y + self.text_surf.get_size()[1] / 2
         )
         pg.draw.line(
-            self.screen, c.BLACK,
+            self.screen, c.INPUT_DIALOG_FOREGROUND,
             (start_point[0], start_point[1] - 12),
             (start_point[0], start_point[1] + 12),
         )

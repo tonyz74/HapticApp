@@ -13,11 +13,7 @@ class ConnectTab:
     def __init__(self):
         self.screen = pg.Surface(c.CONNECT_TAB_RECT.size)
 
-        connect_rect = pg.Rect(
-            c.CONNECT_TAB_WIDTH / 2 - 60,
-            c.CONNECT_TAB_HEIGHT / 2 - 30,
-            120, 60
-        )
+        connect_rect = c.CONNECT_BUTTON_RECT
         self.connect_button = Button(
             lambda btn: self.on_connect_clicked(btn),
             connect_rect, "链接", c.BUTTON_STYLE
