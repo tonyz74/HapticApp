@@ -2,41 +2,45 @@ import socketio
 
 
 sio = socketio.Client()
-finished_init = False
+is_connected = False
 
 
 class Messenger:
     def init():
-        global finished_init
+        global is_connected
 
         sio.connect("http://127.0.0.1:8000")
-        finished_init = True
+        is_connected = True
+
+    def is_connected() -> bool:
+        return is_connected
 
     @sio.event
     def connect():
-        print("Connected to server.")
+        print("[messenger] successfully connected to server.")
 
     @sio.on("message")
     def message(data):
-        print("Message received with ", data)
-        sio.emit("my response", {"response": "my response"})
+        raise Exception("Why is this being called?")
 
     @sio.on("vibrate")
     def handle_vibrate(data):
-        print("received confirmation of vibrate")
+        print("[messenger] confirmed that vibration has been received.")
 
     @sio.event
     def disconnect():
-        print("disconnected")
+        global is_connected
+        is_connected = False
+        print("[messenger] disconnected from server.")
 
     def emit_message(msg):
-        if not finished_init:
-            print("Not connected yet!")
+        if not is_connected:
+            print("[messenger] cannot send message, not connected.")
             return
         sio.emit("message", msg)
 
     def close():
-        if not finished_init:
+        if not is_connected:
             return
 
         sio.disconnect()

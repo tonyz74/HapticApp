@@ -2,6 +2,7 @@ import pygame as pg
 from button import Button
 from input import Inputs
 import consts as c
+import events as ev
 import word
 
 
@@ -54,8 +55,8 @@ class CommandTabCommon:
             b.update(i)
 
     def sync(self, i: Inputs):
-        if "word_renamed" in i.notifs:
-            for rn in i.notifs["word_renamed"]:
+        if ev.VIB_RENAMED in i.notifs:
+            for rn in i.notifs[ev.VIB_RENAMED]:
                 for b in self.src_buttons:
                     if b.text == rn["from"]:
                         b.update_text(rn["to"])

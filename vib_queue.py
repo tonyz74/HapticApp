@@ -3,6 +3,7 @@ import input
 import pygame as pg
 import word
 import copy
+import events as ev
 
 
 class VibrationQueue:
@@ -13,10 +14,19 @@ class VibrationQueue:
         self.to_send = []
         self.time_start = None
 
-    def send_sentence(self, sentence: list[str | float]):
+    def send_sentence(self, sentence: list[str | float]) -> bool:
+        if not m.Messenger.is_connected():
+            print("[vib queue] cannot send sentence, " +
+                  "messenger is not connected.")
+            return False
+
         word.word_list.compile_words()
         self.to_send = copy.deepcopy(sentence)
-        input.event_loop.post_notif("start_sending_vibs", None)
+        input.event_loop.post_notif(ev.VIB_STARTED_SENDING, None)
+        return True
+
+    def cancel(self):
+        self.to_send = copy.deepcopy([None])
 
     def update(self):
         if len(self.to_send) == 0:
@@ -48,9 +58,13 @@ class VibrationQueue:
             if time_diff * 0.001 > self.to_send[0]:
                 self.to_send.pop(0)
 
+        elif self.to_send[0] is None:
+            self.to_send.pop(0)
+            print("Yup")
+
         if len(self.to_send) == 0:
             input.event_loop.post_notif(
-                "finished_sending_vibs",
+                ev.VIB_FINISHED_SENDING,
                 None
             )
 

@@ -98,6 +98,16 @@ INPUT_DIALOG_TEXT_INPUT_RECT = (INPUT_DIALOG_RECT
                                 .move(0, 10)
                                 .scale_by(1.0, 0.4))
 
+
+PREVIEW_GRID_START_POS = (20, 240)
+PREVIEW_GRID_TOTAL_WIDTH = 640
+PREVIEW_GRID_TIME_SEP_WIDTH = 10
+PREVIEW_GRID_SLOT_WIDTH = int(
+    PREVIEW_GRID_TOTAL_WIDTH / (TIMELINE_ROW_N_SLOTS / 2)
+) - PREVIEW_GRID_TIME_SEP_WIDTH
+PREVIEW_GRID_BORDER_WIDTH = 1
+PREVIEW_GRID_SLOT_HEIGHT = 80
+
 # Color definitions
 WHITE = pg.Color(0xFF, 0xFF, 0xFF)
 GREEN = pg.Color(0x00, 0xFF, 0x00)
@@ -115,6 +125,10 @@ BUTTON_STYLE = Style(
     click=WHITE,
     normal=GRAY,
 
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+    disabled_normal=BLACK,
+
     fg=BLACK,
     outline=BLACK,
     outline_width=1
@@ -124,6 +138,10 @@ CLOSE_BUTTON_STYLE = Style(
     hover=LIGHTER_RED,
     click=LIGHTER_RED,
     normal=LIGHT_RED,
+
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+    disabled_normal=BLACK,
 
     fg=BLACK,
     outline=BLACK,
@@ -135,6 +153,10 @@ WORDLIST_BUTTON_STYLE = Style(
     click=WHITE,
     normal=LIGHTER_RED,
 
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+    disabled_normal=BLACK,
+
     fg=BLACK,
     outline=BLACK,
     outline_width=1
@@ -144,6 +166,10 @@ TEXT_INPUT_STYLE = Style(
     hover=WHITE,
     click=WHITE,
     normal=WHITE,
+
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+    disabled_normal=BLACK,
 
     fg=BLACK,
     outline=BLACK,
@@ -155,6 +181,10 @@ SLOT_NONE_STYLE = Style(
     click=LIGHT_GRAY,
     normal=GRAY,
 
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+    disabled_normal=BLACK,
+
     fg=BLACK,
     outline=WHITE,
     outline_width=1
@@ -164,6 +194,10 @@ SLOT_VIB_STYLE = Style(
     hover=BLUE,
     click=RED,
     normal=LIGHT_RED,
+
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+    disabled_normal=BLACK,
 
     fg=BLACK,
     outline=WHITE,

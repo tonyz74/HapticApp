@@ -1,4 +1,7 @@
 import consts as c
+import events as ev
+import input
+import copy
 
 
 class Word:
@@ -28,6 +31,11 @@ class WordList:
     def rename_word(self, old: str, new_name: str):
         if not self.word_exists(old):
             raise NameError(f"Word name {old} doesn't exist!")
+
+        input.event_loop.post_notif(ev.VIB_RENAMED, {
+            "from": copy.deepcopy(old),
+            "to": copy.deepcopy(new_name)
+        })
 
         for i in self.words:
             if i.name == old:

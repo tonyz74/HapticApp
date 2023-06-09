@@ -5,7 +5,7 @@ from button import Button
 from input import Inputs
 from input_dialog import InputDialog
 import word
-
+import events as ev
 import vib_queue
 
 class CommandTabAutomatic(CommandTabCommon):
@@ -89,7 +89,12 @@ class CommandTabAutomatic(CommandTabCommon):
         b.update_style(c.SLOT_NONE_STYLE)
 
     def on_play_button_pressed(self, b: Button):
-        vib_queue.vib_queue.send_sentence(self.timeline_data)
+        if b.text == "取消":
+            vib_queue.vib_queue.cancel()
+            return
+
+        if vib_queue.vib_queue.send_sentence(self.timeline_data):
+            self.play_button.update_text("取消")
 
     def render(self) -> pg.Surface:
         self.screen.fill(c.RED)
@@ -100,54 +105,77 @@ class CommandTabAutomatic(CommandTabCommon):
 
         self.play_button.render(self.screen)
 
+        self.draw_preview()
+        self.draw_preview_lines()
+
+        return surf
+
+    def draw_preview(self):
         pg.draw.rect(self.screen, c.WHITE, pg.Rect(
-            (20 - 1, 240 - 1),
-            (640 + 2, 160 + 3)
+            (c.PREVIEW_GRID_START_POS[0] - c.PREVIEW_GRID_BORDER_WIDTH,
+             c.PREVIEW_GRID_START_POS[1] - c.PREVIEW_GRID_BORDER_WIDTH),
+
+            (c.PREVIEW_GRID_TOTAL_WIDTH + 2 * c.PREVIEW_GRID_BORDER_WIDTH,
+             2 * c.PREVIEW_GRID_SLOT_HEIGHT + 3 * c.PREVIEW_GRID_BORDER_WIDTH)
         ))
 
-        preview_pos = [20, 240]
+        preview_pos = [
+            c.PREVIEW_GRID_START_POS[0],
+            c.PREVIEW_GRID_START_POS[1]
+        ]
+
+        preview_slots = int(c.TIMELINE_ROW_N_SLOTS / 2)
 
         for row in range(c.TIMELINE_N_ROWS):
-            preview_pos[0] = 20
+            preview_pos[0] = c.PREVIEW_GRID_START_POS[0]
 
-            for col in range(int(c.TIMELINE_ROW_N_SLOTS / 2)):
-                # split by on & off
+            for col in range(preview_slots):
                 n = row * c.TIMELINE_ROW_N_SLOTS + col * 2
 
                 pg.draw.rect(self.screen, c.LIGHT_GRAY, pg.Rect(
                     (preview_pos[0], preview_pos[1]),
-                    (150, 80)
+                    (c.PREVIEW_GRID_SLOT_WIDTH, c.PREVIEW_GRID_SLOT_HEIGHT)
                 ))
+
+                subslot_width = c.PREVIEW_GRID_SLOT_WIDTH / c.N_SLOTS_PER_WORD
 
                 if word.word_list.word_exists(self.timeline_data[n]):
                     w = word.word_list.find_word(self.timeline_data[n])
                     for (off, enabled) in enumerate(w.vibs):
                         if enabled:
+                            shift = subslot_width * off
                             pg.draw.rect(self.screen, c.RED, pg.Rect(
-                                (preview_pos[0] + 15 * off, preview_pos[1]),
-                                (15, 80)
+                                (preview_pos[0] + shift, preview_pos[1]),
+                                (subslot_width, c.PREVIEW_GRID_SLOT_HEIGHT)
                             ))
 
                 pg.draw.rect(self.screen, c.BLACK, pg.Rect(
-                    (preview_pos[0] + 150, preview_pos[1]),
-                    (10, 80)
+                    (preview_pos[0]+c.PREVIEW_GRID_SLOT_WIDTH, preview_pos[1]),
+                    (c.PREVIEW_GRID_TIME_SEP_WIDTH, c.PREVIEW_GRID_SLOT_HEIGHT)
                 ))
 
-                preview_pos[0] += 160
-            preview_pos[1] += 80 + 1
+                preview_pos[0] += c.PREVIEW_GRID_SLOT_WIDTH
+                preview_pos[0] += c.PREVIEW_GRID_TIME_SEP_WIDTH
 
-        ln_start = [20, 240]
+            preview_pos[1] += (c.PREVIEW_GRID_SLOT_HEIGHT +
+                               c.PREVIEW_GRID_BORDER_WIDTH)
+
+    def draw_preview_lines(self):
+        # Draw the preview
+        ln_start = list(c.PREVIEW_GRID_START_POS)
         for col in range(int(c.TIMELINE_ROW_N_SLOTS / 2)):
-            x = ln_start[0] + 160 * col
-            for subcol in range(10):
-                x += 15
+            x = ln_start[0] + (c.PREVIEW_GRID_SLOT_WIDTH +
+                               c.PREVIEW_GRID_TIME_SEP_WIDTH) * col
+
+            for subcol in range(c.N_SLOTS_PER_WORD):
+                x += c.PREVIEW_GRID_SLOT_WIDTH / c.N_SLOTS_PER_WORD
                 pg.draw.line(
                     self.screen,
                     c.WHITE,
-                    (x, ln_start[1]), (x, ln_start[1] + 161)
+                    (x, ln_start[1]),
+                    (x, ln_start[1] + 2 * c.PREVIEW_GRID_SLOT_HEIGHT
+                                    + c.PREVIEW_GRID_BORDER_WIDTH)
                 )
-
-        return surf
 
     def update(self, i: Inputs):
         super().update(i)
@@ -163,8 +191,8 @@ class CommandTabAutomatic(CommandTabCommon):
 
         super().sync(i)
 
-        if "word_renamed" in i.notifs:
-            for rn in i.notifs["word_renamed"]:
+        if ev.VIB_RENAMED in i.notifs:
+            for rn in i.notifs[ev.VIB_RENAMED]:
                 if self.currently_selected == rn["from"]:
                     self.currently_selected = rn["to"]
 
@@ -172,3 +200,14 @@ class CommandTabAutomatic(CommandTabCommon):
                     if self.timeline_data[idx] == rn["from"]:
                         self.timeline_data[idx] = rn["to"]
                         self.should_sync_timeline = True
+
+        if ev.VIB_STARTED_SENDING in i.notifs:
+            for b in self.src_buttons:
+                b.enabled = False
+            self.switch_button.enabled = False
+
+        if ev.VIB_FINISHED_SENDING in i.notifs:
+            for b in self.src_buttons:
+                b.enabled = True
+            self.switch_button.enabled = True
+            self.play_button.update_text("开始")
