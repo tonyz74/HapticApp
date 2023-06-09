@@ -6,6 +6,7 @@ from command_tab import CommandTab
 from word_def_tab import WordDefinitionTab
 
 import input
+import msg
 import vib_queue
 
 
@@ -52,6 +53,8 @@ class HapticApp:
 
             pg.display.flip()
             self.clock.tick(30)
+
+        msg.Messenger.close()
 
     def render(self):
         word_def = self.word_def_tab.render()

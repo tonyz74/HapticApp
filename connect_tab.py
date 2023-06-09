@@ -19,7 +19,7 @@ class ConnectTab:
         )
         self.connect_button = Button(
             lambda btn: self.on_connect_clicked(btn),
-            connect_rect, "Click Me!", c.BUTTON_STYLE
+            connect_rect, "链接Server", c.BUTTON_STYLE
         )
 
     def render(self) -> pg.Surface:
@@ -31,4 +31,7 @@ class ConnectTab:
         self.connect_button.update(i)
 
     def on_connect_clicked(self, btn):
-        msg.Messenger.init()
+        try:
+            msg.Messenger.init()
+        except Exception:
+            print("Failed to connect!")

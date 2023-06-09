@@ -34,3 +34,9 @@ class Messenger:
             print("Not connected yet!")
             return
         sio.emit("message", msg)
+
+    def close():
+        if not finished_init:
+            return
+
+        sio.disconnect()
