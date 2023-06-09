@@ -28,12 +28,14 @@ class WordDefinitionTab:
         BTN_WIDTH, BTN_HEIGHT = c.WORDLIST_WORD_BUTTON_SIZE
 
         self.word_buttons = []
-        offsets = [
-            (10, 20),
-            (10 + BTN_WIDTH + 10, 20),
-            (10, 20 + BTN_HEIGHT + 10),
-            (10 + BTN_WIDTH + 10, 20 + BTN_HEIGHT + 10)
-        ]
+        left_offsets = [(
+            10, 20 + BTN_HEIGHT * i + 10 * i
+        ) for i in range(int(c.N_WORDS / 2))]
+        right_offsets = [(
+            10 + BTN_WIDTH + 10,
+            20 + BTN_HEIGHT * i + 10 * i
+        ) for i in range(int(c.N_WORDS / 2))]
+        offsets = left_offsets + right_offsets
 
         # Create word list choice buttons
 

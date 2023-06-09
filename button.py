@@ -50,6 +50,9 @@ class Button:
         self.style = style
 
     def render(self, target: pg.Surface):
+        if self.disabled:
+            return
+
         # Judge color based on state
         bg = None
         if self.state == "HOVER":
@@ -79,6 +82,9 @@ class Button:
         target.blit(self.text_surf, mid)
 
     def update(self, inputs: Inputs):
+        if self.disabled:
+            return
+
         execute = False
 
         if self.rect.collidepoint(inputs.mouse_pos):

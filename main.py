@@ -73,6 +73,9 @@ class HapticApp:
         wd_inputs = inputs.contextualize(c.WORD_DEF_TAB_RECT.topleft)
         self.word_def_tab.update(wd_inputs)
 
+        cmd_inputs = inputs.contextualize(c.COMMAND_TAB_RECT.topleft)
+        self.command_tab.update(cmd_inputs)
+
 
 if __name__ == "__main__":
     HapticApp().mainloop()
