@@ -106,6 +106,8 @@ class WordDefinitionTab:
         return self.screen
 
     def update(self, i: Inputs):
+        self.sync(i)
+
         for b in self.word_buttons:
             b.update(i)
 
@@ -133,6 +135,21 @@ class WordDefinitionTab:
             if not on:
                 style = c.SLOT_NONE_STYLE
             self.vib_buttons[i].update_style(style)
+
+    def sync(self, i: Inputs):
+        if self.word_changed:
+            self.word_changed = False
+            self.sync_with_wordlist()
+
+        if ev.VIB_STARTED_SENDING in i.notifs:
+            for button in self.vib_buttons:
+                button.enabled = False
+            self.name_change_button.enabled = False
+
+        if ev.VIB_FINISHED_SENDING in i.notifs:
+            for button in self.vib_buttons:
+                button.enabled = True
+            self.name_change_button.enabled = True
 
     def on_rename_button_pressed(self, btn: Button):
         res = InputDialog("请输入动作名字：").evaluate()
