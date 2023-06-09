@@ -3,6 +3,7 @@ import pygame as pg
 from button import Button
 from input import Inputs
 import msg
+import events as ev
 
 
 class ConnectTab:
@@ -19,7 +20,7 @@ class ConnectTab:
         )
         self.connect_button = Button(
             lambda btn: self.on_connect_clicked(btn),
-            connect_rect, "链接Server", c.BUTTON_STYLE
+            connect_rect, "链接", c.BUTTON_STYLE
         )
 
     def render(self) -> pg.Surface:
@@ -30,8 +31,21 @@ class ConnectTab:
     def update(self, i: Inputs):
         self.connect_button.update(i)
 
+        self.sync(i)
+
+    def sync(self, i: Inputs):
+        if ev.MESSENGER_DISCONNECTED in i.notifs:
+            self.connect_button.update_text("链接")
+
+        if ev.MESSENGER_CONNECTED in i.notifs:
+            self.connect_button.update_text("已链接")
+
     def on_connect_clicked(self, btn):
+        if msg.Messenger.is_connected():
+            return
+
         try:
             msg.Messenger.init()
         except Exception:
-            print("Failed to connect!")
+            # just let them click it again
+            pass
