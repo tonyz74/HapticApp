@@ -1,6 +1,7 @@
 import pygame as pg
 from dataclasses import dataclass
 from copy import deepcopy
+from typing import Any
 
 
 MB_LEFT = 1
@@ -21,6 +22,8 @@ class Inputs:
     text_editing_start: int
     text_input: str
 
+    notifs: dict[str, list[Any]]
+
     def contextualize(self, topleft: (int, int)):
         dup = deepcopy(self)
         dup.mouse_pos = (
@@ -32,6 +35,14 @@ class Inputs:
 
 
 class EventLoop:
+    queued_notifs: list[(str, Any)]
+
+    def __init__(self):
+        self.queued_notifs = []
+
+    def post_notif(self, name, data):
+        self.queued_notifs.append((name, data))
+
     def execute(self) -> Inputs | None:
         keys_just_pressed: set[int] = set()
         keys_just_released: set[int] = set()
@@ -70,6 +81,18 @@ class EventLoop:
 
         clicked_btns = pg.mouse.get_pressed()
 
+        notifs = {}
+        for name, data in self.queued_notifs:
+            if name not in notifs:
+                notifs[name] = [data]
+            else:
+                notifs[name.append(data)]
+
+        if notifs:
+            print(notifs)
+
+        self.queued_notifs.clear()
+
         return Inputs(
             pg.mouse.get_pos(),
             tuple(mouse_just_pressed),
@@ -82,4 +105,9 @@ class EventLoop:
             text_editing,
             text_editing_start,
             text_input,
+
+            notifs
         )
+
+
+event_loop: EventLoop = EventLoop()

@@ -5,7 +5,7 @@ from connect_tab import ConnectTab
 from command_tab import CommandTab
 from word_def_tab import WordDefinitionTab
 
-from input import EventLoop, Inputs
+import input
 
 
 class HapticApp:
@@ -15,8 +15,6 @@ class HapticApp:
     word_def_tab: WordDefinitionTab
     connect_tab: ConnectTab
     command_tab: CommandTab
-
-    event_loop: EventLoop
 
     running: bool
 
@@ -37,13 +35,11 @@ class HapticApp:
         self.connect_tab = ConnectTab()
         self.command_tab = CommandTab()
 
-        self.event_loop = EventLoop()
-
     def mainloop(self):
         self.running = True
 
         while self.running:
-            inputs = self.event_loop.execute()
+            inputs = input.event_loop.execute()
             if inputs is None:
                 self.running = False
                 break

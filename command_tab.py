@@ -32,6 +32,9 @@ class CommandTab:
         return self.screen
 
     def update(self, i: Inputs):
+        self.auto.sync(i)
+        self.manual.sync(i)
+
         self.current.update(i)
 
         if self.current.switch_requested:

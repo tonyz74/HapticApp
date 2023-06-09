@@ -4,7 +4,8 @@ from button import Button
 from input import Inputs
 from input_dialog import InputDialog
 import word
-from copy import deepcopy
+import input
+import copy
 
 
 class WordDefinitionTab:
@@ -141,6 +142,11 @@ class WordDefinitionTab:
             if i.text == self.current_word:
                 i.update_text(res)
 
+        input.event_loop.post_notif("word_renamed", {
+            "from": copy.deepcopy(self.current_word),
+            "to": copy.deepcopy(res)
+        })
+
         word.word_list.rename_word(self.current_word, res)
         self.current_word = res
         self.word_changed = True
@@ -148,6 +154,11 @@ class WordDefinitionTab:
     def on_vib_button_pressed(self, btn: Button, index: int):
         word_vibs = word.word_list.find_word(self.current_word).vibs
         word_vibs[index] = not word_vibs[index]
+
+        input.event_loop.post_notif("vib_pattern_changed", {
+            "word": copy.deepcopy(self.current_word),
+            "index": index
+        })
 
         new_style = c.SLOT_NONE_STYLE
         if word_vibs[index]:

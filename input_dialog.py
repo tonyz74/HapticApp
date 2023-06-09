@@ -50,6 +50,7 @@ class InputDialog:
 
     def close_pressed(self, btn: Button):
         self.running = False
+        self.result_str = None
 
     def evaluate(self) -> str | None:
         self.screen.fill(
@@ -68,6 +69,8 @@ class InputDialog:
             pg.display.flip()
             self.clock.tick(30)
 
+        if self.result_str is None:
+            return ""
         return self.result_str
 
     def render(self):
@@ -118,6 +121,9 @@ class InputDialog:
 
     def update(self, i: Inputs):
         self.close_button.update(i)
+
+        if self.result_str is None:
+            return
 
         if pg.K_RETURN in i.keys_just_pressed:
             self.running = False
