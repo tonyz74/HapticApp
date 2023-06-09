@@ -131,6 +131,9 @@ class WordDefinitionTab:
 
     def on_rename_button_pressed(self, btn: Button):
         res = InputDialog("请输入动作名字：").evaluate()
+        is_duplicate = word.word_list.word_exists(res)
+        if res == "" or res.strip() == "" or is_duplicate:
+            res = self.current_word
 
         for i in self.word_buttons:
             if i.text == self.current_word:
