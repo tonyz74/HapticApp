@@ -6,6 +6,7 @@ from input import Inputs
 from input_dialog import InputDialog
 import word
 
+import vib_queue
 
 class CommandTabAutomatic(CommandTabCommon):
     timeline_buttons: list[Button]
@@ -14,10 +15,18 @@ class CommandTabAutomatic(CommandTabCommon):
     timeline_data: list[str | float]
     should_sync_timeline: bool
 
+    play_button: Button
+
     def __init__(self):
         super().__init__("自动", lambda b: self.on_src_button_pressed(b))
 
         self.currently_selected = None
+
+        self.play_button = Button(
+            lambda b: self.on_play_button_pressed(b),
+            c.PLAY_BUTTON_RECT,
+            "开始", c.SLOT_VIB_STYLE
+        )
 
         self.timeline_buttons = []
         self.timeline_data = ["" if i % 2 == 0 else 0.0 for i in range(
@@ -79,12 +88,17 @@ class CommandTabAutomatic(CommandTabCommon):
         self.currently_selected = b.text
         b.update_style(c.SLOT_NONE_STYLE)
 
+    def on_play_button_pressed(self, b: Button):
+        vib_queue.vib_queue.send_sentence(self.timeline_data)
+
     def render(self) -> pg.Surface:
         self.screen.fill(c.RED)
         surf = super().render()
 
         for b in self.timeline_buttons:
             b.render(self.screen)
+
+        self.play_button.render(self.screen)
 
         pg.draw.rect(self.screen, c.WHITE, pg.Rect(
             (20 - 1, 240 - 1),
@@ -127,8 +141,11 @@ class CommandTabAutomatic(CommandTabCommon):
             x = ln_start[0] + 160 * col
             for subcol in range(10):
                 x += 15
-                pg.draw.line(self.screen, c.WHITE, (x, ln_start[1]), (x, ln_start[1] + 161))
-
+                pg.draw.line(
+                    self.screen,
+                    c.WHITE,
+                    (x, ln_start[1]), (x, ln_start[1] + 161)
+                )
 
         return surf
 
@@ -136,6 +153,8 @@ class CommandTabAutomatic(CommandTabCommon):
         super().update(i)
         for b in self.timeline_buttons:
             b.update(i)
+
+        self.play_button.update(i)
 
     def sync(self, i: Inputs):
         if self.should_sync_timeline:

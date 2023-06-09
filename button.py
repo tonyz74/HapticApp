@@ -17,7 +17,11 @@ class Button:
 
     state: str
     color: pg.Color
-    disabled: bool
+
+    # Styles it differently, doesn't accept clicks
+    enabled: bool
+    # Makes the button disappear entirely
+    active: bool
 
     def __init__(
         self,
@@ -36,7 +40,8 @@ class Button:
         self.update_style(self.style)
         self.update_text(self.text, force=True)
 
-        self.disabled = False
+        self.enabled = True
+        self.active = True
 
     def update_text(self, text: str, force=False):
         if self.text == text:
@@ -50,17 +55,18 @@ class Button:
         self.style = style
 
     def render(self, target: pg.Surface):
-        if self.disabled:
+        if not self.active:
             return
 
         # Judge color based on state
         bg = None
+        e = self.enabled
         if self.state == "HOVER":
-            bg = self.style.hover
+            bg = self.style.hover if e else self.style.disabled_hover
         elif self.state == "CLICK":
-            bg = self.style.click
+            bg = self.style.click if e else self.style.disabled_click
         elif self.state == "NORMAL":
-            bg = self.style.normal
+            bg = self.style.normal if e else self.style.disabled_normal
 
         if self.style.outline_width != 0:
             pg.draw.rect(
@@ -82,7 +88,7 @@ class Button:
         target.blit(self.text_surf, mid)
 
     def update(self, inputs: Inputs):
-        if self.disabled:
+        if not self.enabled or not self.active:
             return
 
         execute = False

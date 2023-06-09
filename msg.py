@@ -2,11 +2,15 @@ import socketio
 
 
 sio = socketio.Client()
+finished_init = False
 
 
 class Messenger:
     def init():
+        global finished_init
+
         sio.connect("http://127.0.0.1:8000")
+        finished_init = True
 
     @sio.event
     def connect():
@@ -26,17 +30,7 @@ class Messenger:
         print("disconnected")
 
     def emit_message(msg):
+        if not finished_init:
+            print("Not connected yet!")
+            return
         sio.emit("message", msg)
-
-    def send_vibrate(data):
-        example_format = {
-                # in format [VIBRATE, PAUSE, VIBRATE, PAUSE...]
-                "pattern": [100, 400, 100],
-                "interval": 2000
-        }
-
-        if data is None:
-            print("HELP:")
-            print(example_format)
-        else:
-            Messenger.emit_message(data)

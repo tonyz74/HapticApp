@@ -2,6 +2,7 @@ import consts as c
 import pygame as pg
 from button import Button
 from input import Inputs
+import msg
 
 
 class ConnectTab:
@@ -30,4 +31,4 @@ class ConnectTab:
         self.connect_button.update(i)
 
     def on_connect_clicked(self, btn):
-        pass
+        msg.Messenger.init()

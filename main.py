@@ -6,6 +6,7 @@ from command_tab import CommandTab
 from word_def_tab import WordDefinitionTab
 
 import input
+import vib_queue
 
 
 class HapticApp:
@@ -62,6 +63,8 @@ class HapticApp:
         self.screen.blit(command, c.COMMAND_TAB_RECT)
 
     def update(self, inputs):
+        vib_queue.vib_queue.update()
+
         connect_inputs = inputs.contextualize(c.CONNECT_TAB_RECT.topleft)
         self.connect_tab.update(connect_inputs)
 
