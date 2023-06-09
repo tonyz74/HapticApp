@@ -62,7 +62,6 @@ class HapticApp:
         self.screen.blit(command, c.COMMAND_TAB_RECT)
 
     def update(self, inputs):
-
         connect_inputs = inputs.contextualize(c.CONNECT_TAB_RECT.topleft)
         self.connect_tab.update(connect_inputs)
 
@@ -74,4 +73,11 @@ class HapticApp:
 
 
 if __name__ == "__main__":
+    # import msg
+
     HapticApp().mainloop()
+    # msg.Messenger.init()
+    # msg.Messenger.emit_message({
+    #     "pattern": [100],
+    #     "interval": 200
+    # })

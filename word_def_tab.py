@@ -121,6 +121,7 @@ class WordDefinitionTab:
         if pg.K_ESCAPE in i.keys_just_pressed:
             for i in word.word_list.words:
                 print(f"Word {i.name}: {i.vibs}")
+            word.word_list.compile_words()
 
     def sync_with_wordlist(self):
         self.name_change_button.update_text(self.current_word)

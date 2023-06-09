@@ -1,5 +1,6 @@
 import consts as c
 
+
 class Word:
     name: str
     vibs: list[bool]
@@ -11,9 +12,11 @@ class Word:
 
 class WordList:
     words: list[Word]
+    compiled_words: dict[str, list[int]]
 
     def __init__(self):
         self.words = []
+        self.compiled_words = {"": [0, c.SLOT_TIME_MS * c.N_SLOTS_PER_WORD]}
         for i in range(c.N_WORDS):
             self.words.append(Word(str(i + 1)))
 
@@ -35,6 +38,29 @@ class WordList:
             if i.name == name:
                 return i
         return None
+
+    def compile_words(self):
+        for w in self.words:
+            pattern = []
+            contiguous = 0
+            prev = None
+
+            if w.vibs[0] is False:
+                pattern.append(0)
+
+            for v in w.vibs:
+                if prev is None or v == prev:
+                    contiguous += 1
+                else:
+                    pattern.append(contiguous * c.SLOT_TIME_MS)
+                    contiguous = 1
+                prev = v
+
+            pattern.append(contiguous * c.SLOT_TIME_MS)
+
+            self.compiled_words[w.name] = pattern
+
+        print(self.compiled_words)
 
 
 word_list: WordList = WordList()
