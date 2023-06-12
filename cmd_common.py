@@ -30,7 +30,7 @@ class CommandTabCommon:
         for w in word.word_list.words:
             self.src_buttons.append(Button(
                 callback, pg.Rect(src_start, c.WORDLIST_WORD_BUTTON_SIZE),
-                w.name, c.WORDLIST_BUTTON_STYLE
+                w.name, c.TIMELINE_WORD_STYLE
             ))
             src_start = (
                 src_start[0] + 10 + c.WORDLIST_WORD_BUTTON_SIZE[0],

@@ -57,7 +57,7 @@ class WordDefinitionTab:
 
         self.name_label = Button(
             None, c.NAME_LABEL_RECT,
-            "动作名字", c.WORDLIST_BUTTON_STYLE
+            "动作名字", c.NAME_LABEL_STYLE
         )
 
         self.name_change_button = Button(

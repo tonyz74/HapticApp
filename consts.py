@@ -122,9 +122,14 @@ BLUE = pg.Color(0x00, 0x00, 0xFF)
 BLACK = pg.Color(0x00, 0x00, 0x00)
 LIGHT_GRAY = pg.Color(0xF0, 0xF0, 0xF0)
 GRAY = pg.Color(0xE0, 0xE0, 0xE0)
+
 RED = pg.Color(0xFF, 0x40, 0x40)
 LIGHT_RED = pg.Color(0xFF, 0x60, 0x60)
 LIGHTER_RED = pg.Color(0xFF, 0x70, 0x70)
+DARK_RED = pg.Color(0xCD, 0x4F, 0x44)
+
+LIGHT_GREEN = pg.Color(0x65, 0xDB, 0x79)
+LIGHTER_GREEN = pg.Color(0x89, 0xDF, 0x9E)
 
 SLIGHTLY_DARK_GRAY = pg.Color(0x70, 0x70, 0x70)
 SLIGHTLY_DARKER_GRAY = pg.Color(0x50, 0x50, 0x50)
@@ -133,10 +138,10 @@ DARKER_GRAY = pg.Color(0x10, 0x10, 0x10)
 
 # Styles
 
-COMMAND_AUTO_BACKGROUND = WHITE
+COMMAND_AUTO_BACKGROUND = LIGHT_GRAY
 COMMAND_AUTO_FOREGROUND = BLACK
 
-COMMAND_MANUAL_BACKGROUND = WHITE
+COMMAND_MANUAL_BACKGROUND = LIGHT_GRAY
 COMMAND_MANUAL_FOREGROUND = BLACK
 
 CONNECT_BACKGROUND = LIGHT_GRAY
@@ -152,7 +157,7 @@ WORD_DEF_BACKGROUND = GRAY
 WORD_DEF_FOREGROUND = BLACK
 WORDLIST_BACKGROUND = LIGHT_GRAY
 
-PREVIEW_GRID_OUTLINE_COLOR = SLIGHTLY_DARKER_GRAY
+PREVIEW_GRID_OUTLINE_COLOR = BLACK
 
 BUTTON_STYLE = Style(
     hover=LIGHT_GRAY,
@@ -183,13 +188,14 @@ CLOSE_BUTTON_STYLE = Style(
 )
 
 WORDLIST_BUTTON_STYLE = Style(
-    hover=WHITE,
-    click=WHITE,
-    normal=LIGHTER_RED,
+    normal=pg.Color(0xf6, 0xc8, 0x54),
+    hover=pg.Color(0xf7, 0xce, 0x67),
+    click=pg.Color(0xf8, 0xd4, 0x7a),
 
-    disabled_click=BLACK,
-    disabled_hover=BLACK,
-    disabled_normal=BLACK,
+    #dcae3b
+    disabled_normal=pg.Color(0xdc, 0xae, 0x3b),
+    disabled_hover=pg.Color(0xdc, 0xae, 0x3b),
+    disabled_click=pg.Color(0xdc, 0xae, 0x3b),
 
     fg=BLACK,
     outline=BLACK,
@@ -201,9 +207,9 @@ TEXT_INPUT_STYLE = Style(
     click=WHITE,
     normal=WHITE,
 
-    disabled_click=BLACK,
-    disabled_hover=BLACK,
-    disabled_normal=BLACK,
+    disabled_click=LIGHT_GRAY,
+    disabled_hover=LIGHT_GRAY,
+    disabled_normal=LIGHT_GRAY,
 
     fg=BLACK,
     outline=BLACK,
@@ -215,68 +221,85 @@ SLOT_NONE_STYLE = Style(
     click=LIGHT_GRAY,
     normal=GRAY,
 
-    disabled_click=BLACK,
-    disabled_hover=BLACK,
-    disabled_normal=BLACK,
+    disabled_click=GRAY,
+    disabled_hover=GRAY,
+    disabled_normal=GRAY,
 
     fg=BLACK,
-    outline=WHITE,
+    outline=BLACK,
     outline_width=1
 )
 
 SLOT_VIB_STYLE = Style(
-    hover=BLUE,
-    click=RED,
-    normal=LIGHT_RED,
+    normal=pg.Color(0xf6, 0xc8, 0x54),
+    hover=pg.Color(0xf7, 0xce, 0x67),
+    click=pg.Color(0xf8, 0xd4, 0x7a),
+
+    disabled_normal=pg.Color(0xdc, 0xae, 0x3b),
+    disabled_hover=pg.Color(0xdc, 0xae, 0x3b),
+    disabled_click=pg.Color(0xdc, 0xae, 0x3b),
+    # disabled_normal=(0x80, 0x80, 0x80),
+    # disabled_hover=(0x80, 0x80, 0x80),
+    # disabled_click=(0x80, 0x80, 0x80),
+
+    fg=BLACK,
+    outline=BLACK,
+    outline_width=1
+)
+
+SRC_SELECTED_STYLE = Style(
+    normal=pg.Color(0xb7, 0xdb, 0xf4),
+    hover=pg.Color(0xc3, 0xe1, 0xf6),
+    click=pg.Color(0xc3, 0xe1, 0xf6),
 
     disabled_click=BLACK,
     disabled_hover=BLACK,
     disabled_normal=BLACK,
 
     fg=BLACK,
-    outline=WHITE,
+    outline=BLACK,
     outline_width=1
 )
 
 TIMELINE_EMPTY_STYLE = Style(
-    hover=BLUE,
-    click=RED,
-    normal=LIGHT_RED,
+    hover=pg.Color(0x54, 0x82, 0xf6),
+    click=pg.Color(0x67, 0x90, 0xf7),
+    normal=pg.Color(0x42, 0x75, 0xf5),
 
-    disabled_click=BLACK,
-    disabled_hover=BLACK,
-    disabled_normal=BLACK,
+    disabled_click=pg.Color(0x43, 0x68, 0xc4),
+    disabled_hover=pg.Color(0x43, 0x68, 0xc4),
+    disabled_normal=pg.Color(0x43, 0x68, 0xc4),
 
     fg=BLACK,
-    outline=WHITE,
+    outline=BLACK,
     outline_width=1
 )
 
 TIMELINE_WORD_STYLE = Style(
-    hover=BLUE,
-    click=RED,
-    normal=LIGHT_RED,
+    normal=pg.Color(0x88, 0xc4, 0xed),
+    hover=pg.Color(0x93, 0xc9, 0xee),
+    click=pg.Color(0x9f, 0xcf, 0xf0),
 
-    disabled_click=BLACK,
-    disabled_hover=BLACK,
-    disabled_normal=BLACK,
+    disabled_click=pg.Color(0x7a, 0xb0, 0xd5),
+    disabled_hover=pg.Color(0x7a, 0xb0, 0xd5),
+    disabled_normal=pg.Color(0x7a, 0xb0, 0xd5),
 
     fg=BLACK,
-    outline=WHITE,
+    outline=BLACK,
     outline_width=1
 )
 
 TIMELINE_TIME_SLOT_STYLE = Style(
-    hover=SLIGHTLY_DARK_GRAY,
-    click=SLIGHTLY_DARK_GRAY,
-    normal=SLIGHTLY_DARKER_GRAY,
+    normal=pg.Color(0x27, 0x46, 0x93),
+    hover=pg.Color(0x2e, 0x51, 0xab),
+    click=pg.Color(0x34, 0x5d, 0xc4),
 
-    disabled_click=DARK_GRAY,
-    disabled_hover=DARK_GRAY,
-    disabled_normal=DARKER_GRAY,
+    disabled_click=pg.Color(0x1f, 0x38, 0x75),
+    disabled_hover=pg.Color(0x1f, 0x38, 0x75),
+    disabled_normal=pg.Color(0x1f, 0x38, 0x75),
 
     fg=WHITE,
-    outline=WHITE,
+    outline=BLACK,
     outline_width=1
 )
 
@@ -285,11 +308,53 @@ COMMAND_SWITCH_MODE_BUTTON_STYLE = Style(
     click=SLIGHTLY_DARK_GRAY,
     normal=SLIGHTLY_DARKER_GRAY,
 
-    disabled_click=DARK_GRAY,
-    disabled_hover=DARK_GRAY,
-    disabled_normal=DARKER_GRAY,
+    disabled_click=pg.Color(0x30, 0x30, 0x30),
+    disabled_hover=pg.Color(0x30, 0x30, 0x30),
+    disabled_normal=pg.Color(0x30, 0x30, 0x30),
 
     fg=WHITE,
+    outline=BLACK,
+    outline_width=1
+)
+
+NAME_LABEL_STYLE = Style(
+    hover=WHITE,
+    click=WHITE,
+    normal=WHITE,
+
+    disabled_normal=LIGHT_GRAY,
+    disabled_hover=LIGHT_GRAY,
+    disabled_click=LIGHT_GRAY,
+
+    fg=BLACK,
+    outline=BLACK,
+    outline_width=1
+)
+
+START_BUTTON_STYLE = Style(
+    hover=LIGHTER_GREEN,
+    click=LIGHTER_GREEN,
+    normal=LIGHT_GREEN,
+
+    disabled_normal=BLACK,
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+
+    fg=BLACK,
+    outline=BLACK,
+    outline_width=1
+)
+
+CANCEL_BUTTON_STYLE = Style(
+    hover=LIGHT_RED,
+    click=LIGHT_RED,
+    normal=RED,
+
+    disabled_normal=BLACK,
+    disabled_click=BLACK,
+    disabled_hover=BLACK,
+
+    fg=BLACK,
     outline=BLACK,
     outline_width=1
 )

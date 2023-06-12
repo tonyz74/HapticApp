@@ -32,9 +32,11 @@ class ConnectTab:
     def sync(self, i: Inputs):
         if ev.MESSENGER_DISCONNECTED in i.notifs:
             self.connect_button.update_text("链接")
+            self.connect_button.update_style(c.BUTTON_STYLE)
 
         if ev.MESSENGER_CONNECTED in i.notifs:
             self.connect_button.update_text("已链接")
+            self.connect_button.update_style(c.START_BUTTON_STYLE)
 
     def on_connect_clicked(self, btn):
         if msg.Messenger.is_connected():

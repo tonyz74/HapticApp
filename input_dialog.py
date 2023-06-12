@@ -134,10 +134,14 @@ class InputDialog:
     def update(self, i: Inputs):
         self.close_button.update(i)
 
+        # early exit
         if self.result_str is None:
             return
 
-        if pg.K_RETURN in i.keys_just_pressed:
+        if i.window_just_focused:
+            self.edit_buffer = ""
+
+        if pg.K_RETURN in i.keys_just_pressed and i.text_input == "":
             self.running = False
             return
 
@@ -160,3 +164,5 @@ class InputDialog:
             self.edit_buffer = ""
             self.text_updated = True
             self.cursor_index += len(i.text_input)
+
+        self.cursor_index = max(self.cursor_index, 0)

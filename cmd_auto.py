@@ -26,7 +26,7 @@ class CommandTabAutomatic(CommandTabCommon):
         self.play_button = Button(
             lambda b: self.on_play_button_pressed(b),
             c.PLAY_BUTTON_RECT,
-            "开始", c.SLOT_VIB_STYLE
+            "开始", c.START_BUTTON_STYLE
         )
 
         self.timeline_buttons = []
@@ -70,7 +70,11 @@ class CommandTabAutomatic(CommandTabCommon):
         if self.currently_selected is None:
             return
 
-        self.timeline_data[n] = self.currently_selected
+        if self.timeline_data[n] == self.currently_selected:
+            self.timeline_data[n] = ""
+        else:
+            self.timeline_data[n] = self.currently_selected
+
         self.should_sync_timeline = True
 
     def on_set_wait_btn_pressed(self, btn: Button, n: int):
@@ -85,22 +89,27 @@ class CommandTabAutomatic(CommandTabCommon):
             wait_time = float(self.timeline_data[n])
 
         self.should_sync_timeline = True
-        self.timeline_data[n] = wait_time
+
+        for i in range(len(self.timeline_data)):
+            if i % 2 == 1:
+                self.timeline_data[i] = wait_time
 
     def on_src_button_pressed(self, b: Button):
         for i in self.src_buttons:
             if i.text == self.currently_selected:
-                i.update_style(c.WORDLIST_BUTTON_STYLE)
+                i.update_style(c.TIMELINE_WORD_STYLE)
 
         self.currently_selected = b.text
-        b.update_style(c.SLOT_NONE_STYLE)
+        b.update_style(c.SRC_SELECTED_STYLE)
 
     def on_play_button_pressed(self, b: Button):
         if b.text == "取消":
             vib_queue.vib_queue.cancel()
+            b.update_style(c.START_BUTTON_STYLE)
             return
 
         if vib_queue.vib_queue.send_sentence(self.timeline_data):
+            b.update_style(c.CANCEL_BUTTON_STYLE)
             self.play_button.update_text("取消")
 
     def render(self) -> pg.Surface:
@@ -164,9 +173,9 @@ class CommandTabAutomatic(CommandTabCommon):
                                 )
                             )
 
-                line_color = c.PREVIEW_GRID_OUTLINE_COLOR
+                block_color = c.TIMELINE_TIME_SLOT_STYLE.normal
                 slot_width = c.PREVIEW_GRID_SLOT_WIDTH
-                pg.draw.rect(self.screen, line_color, pg.Rect(
+                pg.draw.rect(self.screen, block_color, pg.Rect(
                     (preview_pos[0] + slot_width, preview_pos[1]),
                     (c.PREVIEW_GRID_TIME_SEP_WIDTH, c.PREVIEW_GRID_SLOT_HEIGHT)
                 ))
@@ -206,6 +215,18 @@ class CommandTabAutomatic(CommandTabCommon):
             for (index, v) in enumerate(self.timeline_data):
                 self.timeline_buttons[index].update_text(str(v))
 
+                if type(v) == float:
+                    continue
+
+                if str(v) == "":
+                    self.timeline_buttons[index].update_style(
+                        c.TIMELINE_EMPTY_STYLE
+                    )
+                else:
+                    self.timeline_buttons[index].update_style(
+                        c.TIMELINE_WORD_STYLE
+                    )
+
         super().sync(i)
 
         if ev.VIB_RENAMED in i.notifs:
@@ -219,12 +240,17 @@ class CommandTabAutomatic(CommandTabCommon):
                         self.should_sync_timeline = True
 
         if ev.VIB_STARTED_SENDING in i.notifs:
-            for b in self.src_buttons:
+            # for b in self.src_buttons:
+            #     b.enabled = False
+            for b in self.timeline_buttons:
                 b.enabled = False
             self.switch_button.enabled = False
 
         if ev.VIB_FINISHED_SENDING in i.notifs:
-            for b in self.src_buttons:
+            # for b in self.src_buttons:
+            #     b.enabled = True
+            for b in self.timeline_buttons:
                 b.enabled = True
             self.switch_button.enabled = True
             self.play_button.update_text("开始")
+            self.play_button.update_style(c.START_BUTTON_STYLE)

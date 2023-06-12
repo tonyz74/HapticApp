@@ -22,6 +22,8 @@ class Inputs:
     text_editing_start: int
     text_input: str
 
+    window_just_focused: str
+
     notifs: dict[str, list[Any]]
 
     def contextualize(self, topleft: (int, int)):
@@ -53,6 +55,8 @@ class EventLoop:
         text_editing = ""
         text_editing_start = -1
 
+        window_just_focused = False
+
         for ev in pg.event.get():
             if ev.type == pg.QUIT:
                 return None
@@ -78,6 +82,9 @@ class EventLoop:
             if ev.type == pg.TEXTEDITING:
                 text_editing = ev.text
                 text_editing_start = ev.start
+
+            if ev.type == pg.WINDOWFOCUSGAINED:
+                window_just_focused = True
 
         clicked_btns = pg.mouse.get_pressed()
 
@@ -105,6 +112,8 @@ class EventLoop:
             text_editing,
             text_editing_start,
             text_input,
+
+            window_just_focused,
 
             notifs
         )
