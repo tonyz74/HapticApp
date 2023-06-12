@@ -1,11 +1,11 @@
 import consts as c
 import pygame as pg
-from input import EventLoop, Inputs
+from input import Inputs
+import input
 from button import Button
 
 
 class InputDialog:
-    event_loop: EventLoop
     running: bool
 
     result_str: str
@@ -24,7 +24,6 @@ class InputDialog:
     def __init__(self, prompt: str):
         self.clock = pg.time.Clock()
         self.screen = pg.display.get_surface()
-        self.event_loop = EventLoop()
         self.running = True
 
         self.result_str = ""
@@ -60,12 +59,12 @@ class InputDialog:
         )
 
         while self.running:
-            input = self.event_loop.execute()
-            if input is None:
+            i = input.event_loop.execute()
+            if i is None:
                 exit(0)
 
             self.render()
-            self.update(input)
+            self.update(i)
 
             pg.display.flip()
             self.clock.tick(30)
